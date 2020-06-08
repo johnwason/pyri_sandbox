@@ -15,19 +15,19 @@ Visiting Researcher, Rensselaer Polytechnic Institute
 
 ## Introduction
 
-Python is a popular and powerful scripting language. Its flexibility, ease of use, extensibility, and rich feature set have made it popular in engineering, computing, data science, and numerous other technical fields. While this flexibilty is desirable in most use cases, it is not ideal for use in industrial robot programming. Automation technicians that program robots are often not trained in software development, and instead have a technical degree from a two year college. To help make robot programming easire, a subset of Python is defined that retains features necessary for this task, but eliminates features that only serve to add complexity and pitfalls for inexperienced developers. The restriction will also provide some level of protection against malicious users and cyberattacks, although that is not the primary objective. **This document contains the specification for the Python Restricted Industrial (PyRI) Language Dialect.**
+Python is a popular and powerful scripting language. Its flexibility, ease of use, extensibility, and rich feature set have made it popular in engineering, computing, data science, and numerous other technical fields. While this flexibility is desirable in most use cases, it is not ideal for use in industrial robot programming. Automation technicians that program robots are often not trained in software development, and instead have a technical degree from a two year college. To help make robot programming easier, a subset of Python is defined that retains features necessary for this task, but eliminates features that only serve to add complexity and pitfalls for inexperienced developers. The restriction will also provide some level of protection against malicious users and cyber-attacks, although that is not the primary objective. **This document contains the specification for the Python Restricted Industrial (PyRI) Language Dialect.**
 
 ## Motivation
 
-Python has gained significant popularity in robotics, and has become the de-facto standard for open-source development using ROS, Robot Raconteur, Orocos, and many other ecosystems. While Python has become popular within the open-source community for robot software development, most industrial applications still use propriety software languages such as ABB Rapid, Motoman INFORM, FANUC KAREL, Omron/Adept V+, Staubli VAL3, Kuka KRL, etc. These languages tend to be obscure, outdated, and limited when compared to newer scripting languages like Python or even JavaScript. Their obscurity and outdatedness makes aquiring, training, and retaining talent difficult and expensive. These languages also require some level of computer science knowledge to be properly utilized. The goal of the Python Restricted Industrial (PyRI) project is to create a simplified (restricted) Python dialect specifically for industrial automation/robotics programming that retains the desirable properties of Python, while presenting the technician with a friendly experience that is not overwhelmingly complicated. The PyRI project will also provide a runtime environment with sandox, teach pendant hardware, user interface software, and plugins for use with the PyRI dialect. These components are discussed in other documents.
+Python has gained significant popularity in robotics, and has become the de-facto standard for open-source development using ROS, Robot Raconteur, Orocos, and many other ecosystems. While Python has become popular within the open-source community for robot software development, most industrial applications still use propriety software languages such as ABB Rapid, Motoman INFORM, FANUC KAREL, Omron/Adept V+, Staubli VAL3, Kuka KRL, etc. These languages tend to be obscure, outdated, and limited when compared to newer scripting languages like Python or even JavaScript. Their obscurity and outdatedness makes acquiring, training, and retaining talent difficult and expensive. These languages also require some level of computer science knowledge to be properly utilized. The goal of the Python Restricted Industrial (PyRI) project is to create a simplified (restricted) Python dialect specifically for industrial automation/robotics programming that retains the desirable properties of Python, while presenting the technician with a friendly experience that is not overwhelmingly complicated. The PyRI project will also provide a runtime environment with sanddox, teach pendant hardware, user interface software, and plugins for use with the PyRI dialect. These components are discussed in other documents.
 
 ## Zope RestrictedPython Project
 
-The concept of a restricted python sandox is not new, and several examples exist including RPython from the PyPy project, MicroPython for embedded systems, and RestrictedPython from the Zope foundation. RestrictedPython is intended to allow untrusted web users to execute scripts on the server while preventing malicious behavior (aka "sandboxing"). [RestrictedPython describes their approach as:](https://restrictedpython.readthedocs.io/en/latest/idea.html)
+The concept of a restricted python sandbox is not new, and several examples exist including RPython from the PyPy project, MicroPython for embedded systems, and RestrictedPython from the Zope foundation. RestrictedPython is intended to allow untrusted web users to execute scripts on the server while preventing malicious behavior (aka "sandboxing"). [RestrictedPython describes their approach as:](https://restrictedpython.readthedocs.io/en/latest/idea.html)
 
 > Defining a secure subset of the language involves restricting the EBNF elements and explicitly allowing or disallowing language features. Much of the power of a programming language derives from its standard and contributed libraries, so any calling of these methods must also be checked and potentially restricted. RestrictedPython generally disallows calls to any library that is not explicit whitelisted.
 
-*(EBNF stands for "[Extended Backus–Naur form](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form)", a metasyntax uset to express context-free grammar)*
+*(EBNF stands for "[Extended Backus–Naur form](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form)", a metasyntax used to express context-free grammar)*
 
 In practice, RestrictedPython module uses two approaches to create a secure sandbox environment:
 
@@ -93,7 +93,7 @@ Deny access to Ellipsis node
 * RestrictedPython: Allowed
 * PyRI: Allowed
 
-#### JonedStr
+#### JoinedStr
 
 * RestrictedPython: Allowed
 * PyRI: Allowed
@@ -351,7 +351,7 @@ Starred operations introduce unnecessary complexity for PyRI.
 * RestrictedPython: Restricted
 * **PyRI: Restricted**
 
-Prevent calls to "exec" and "eval" to protect against abritrary code execution.
+Prevent calls to "exec" and "eval" to protect against arbitrary code execution.
 
 RestrictedPython protects unpacking of Starred argument tuples. Since the starred operator is denied in PyRI, this is unnecessary.
 
@@ -379,7 +379,7 @@ PyRI allows for calling two special functions to track blockly execution:
 * RestrictedPython: Restricted
 * **PyRI: Restricted**
 
-Attribute access to objects is redirected to the guaded functions `_getattr_` and `_write_`.  Access to attributes starting with understore "_" or ending with "\_\_roles\_\_" is denied. PyRI implements these guaded functions to protect data within plugin objects.
+Attribute access to objects is redirected to the guarded functions `_getattr_` and `_write_`.  Access to attributes starting with underscore "_" or ending with "\_\_roles\_\_" is denied. PyRI implements these guarded functions to protect data within plugin objects.
 
 #### Subscripting
 
@@ -567,7 +567,7 @@ Note that names and assignments are checked by the Name and Assign nodes.
 * RestrictedPython: Restricted
 * *PyRI: Restricted*
 
-Unpacing of tuples is guarded using `_getiter_` and name of exception variable is checked. PyRI does additional checks on exception variable to prevent overwriting builtins or plugin objects.
+Unpacking of tuples is guarded using `_getiter_` and name of exception variable is checked. PyRI does additional checks on exception variable to prevent overwriting builtins or plugin objects.
 
 #### With
 
@@ -701,7 +701,7 @@ The previous section defines the policy of each AST Node type. While precise, th
 3. `PrintCollector` is used to capture print statements instead of sending to `stdout`
 4. The star operator for `*args` and `*kwargs` is denied
 5. `eval` and `exec` are denied
-6. Attributes are accessud using `_getattr_` and `_write_` guard functions. Attributes beginning with underscore "_" or ending with "\_\_roles\_\_" are denied.
+6. Attributes are accessed using `_getattr_` and `_write_` guard functions. Attributes beginning with underscore "_" or ending with "\_\_roles\_\_" are denied.
 7. Subscripting is redirected to use guard functions `_getitem_` and `_write_`
 8. Comprehensions of all types are denied
 9. Assignment is restricted. Bultins and plugin objects may not be overwritten. The guard function `_getiter_` is used for tuple expansion.
@@ -723,4 +723,47 @@ The previous section defines the policy of each AST Node type. While precise, th
 25. Global module scope for all but functions is denied because module scope is never executed
 26. Ellipsis (...) is denied
 
+## Safe builtins and modules
 
+### Safe builtins
+
+RestrictedPython provides a set of [three builtin groups](https://restrictedpython.readthedocs.io/en/latest/usage/policy.html#predefined-builtins):
+
+* `safe_builtins` a safe set of builtin modules and functions
+* `limited_builtins` restricted sequence types
+* `utility_builtins` access to standard modules like math, random, string, and set
+
+The PyRI restricted Python dialect provides `safe_builtins` and `limited_builtins` for the user. The base sandbox has limited functionality, with all standard library and utility functions provided by plugins.
+
+### Guard Functions
+
+RestrictedPython modifies the AST to add "guard functions" to certain unsafe operations. These guard functions are designed to prevent unsafe behavior, or behavior that is confusing to novice users. PyRI modifies these guard functions to allow plugin objects to be accessed safely. See the plugin object section for more details.
+
+## User-defined data types
+
+The restricted Python dialect restricts the use of the `class` keyword. This prevents the definition of user-defined Python types. The reason for this restriction is to simplify the dialect for novice users, since Python class definitions can be complex and ambiguous at times. Python does not have a pure data structure type, meaning that any Python object contains both data and code (functions). Python objects also do not provide strong type checking. The restricted Python dialect requires user-defined pure data structure types that enforce strong data typing. These user-defined types are used within the restricted Python sandbox, and with the global variable table.
+
+The user-defined structure types contain named "fields" of data, like most programming languages. It is implemented as a standard Python class, with `__getattr__` and `__setattr__` overridden to implement the user-defined fields, and also implement type checking to enforce the specified data types. The user defines these types using a type editor in the PyRI user interface, by modifying a YAML file directly, or specified in a plugin. Fields may have the following types:
+
+* `int` (64 bit signed integer)
+* `float` (64 bit floating point)
+* `str` (unicode string)
+* `list` (list or nested list)
+* `dict` (dictionary)
+* `struct` (user-defined structure)
+* `object` (plugin object)
+* `device` (device provided by a plugin)
+* `signal` (signal provided by a plugin)
+
+## Plugins
+
+The PyRI architecture is designed around plugins. The core functionality is implemented to allow for programming of generic systems, with specialized functionality like robot motion programming implemented using plugins. This allows for greater customization of the architecture, and avoids overspecialization of the core system that can make future improvements difficult. Plugins provide a number of different features to the overall system. For the restricted Python dialect, the following are significant:
+
+* Additional Python utility functions for use in the restricted Python sandbox.
+* Plugin objects that can be accessed by the sandbox
+* Devices that can be accessed by the sandbox
+* User-defined data types
+
+Plugins inject the functions, objects, devices, and types into the sandbox using the local and global tables passed to the `exec` function that executes the compiled sandbox code. Which functions and variables are injected into the sandbox is configured with a user interface, or with a YAML file that is associated with the sandbox software module. Helper functions are provided to access elements that were not directly injected, but this is not recommended.
+
+Plugins must also provide a set of Blockly block definitions and validation routines that correspond to the Python functions, types, devices, and objects provided by the plugin. These block definitions also contain instructions on how to compile the block to Python for use in the sandbox. Plugins must be designed with consideration for Blockly use, since most users will most novice users will likely prefer Blockly over Python. Complex object-based or full object-oriented design should be avoided when possible, preferring simple, straightforward functional commands.
